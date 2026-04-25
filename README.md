@@ -20,7 +20,7 @@ PORT=5000
 
 # Setup Prisma as follow
 npx prisma generate \
-npx prisma migrate dev \
+npx prisma migrate dev
 
 # Run the Server
 npm run dev
