@@ -1,0 +1,6 @@
+{
+  "name": "AI Technical Interview Room",
+  "description": "An interactive technical interview simulation using AI and the Gemini Live API with real-time transcribed audio.",
+  "requestFramePermissions": ["microphone"],
+  "majorCapabilities": []
+}
