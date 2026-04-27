@@ -9,7 +9,7 @@ export const interviewFlow = async (req, res) => {
     // 🔹 FIRST REQUEST → create candidate + session
     if (!sessionId) {
 
-      // 🔥 Validate role
+      // Validate role
       if (!role) {
         return res.status(400).json({ error: "Role is required" });
       }
@@ -18,7 +18,7 @@ export const interviewFlow = async (req, res) => {
         data: {
           name,
           email: email || "test@gmail.com",
-          role: role, // 🔥 SAVE ROLE
+          role: role, //SAVE ROLE
           jobId: "TEMP_JOB"
         }
       });
@@ -29,7 +29,7 @@ export const interviewFlow = async (req, res) => {
         sessionId,
         answer,
         candidate.id,
-        role // 🔥 PASS ROLE
+        role //PASS ROLE
       );
 
       return res.json({
@@ -42,7 +42,7 @@ export const interviewFlow = async (req, res) => {
 
     // 🔹 NEXT REQUESTS → continue interview
 
-    // 🔥 Fetch role from DB (important)
+    //Fetch role from DB (important)
     const interview = await prisma.interview.findFirst({
       where: { sessionId }
     });
@@ -51,7 +51,7 @@ export const interviewFlow = async (req, res) => {
       sessionId,
       answer,
       null,
-      interview?.role // 🔥 reuse stored role
+      interview?.role //reuse stored role
     );
 
     res.json({
