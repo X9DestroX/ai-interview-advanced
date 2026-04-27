@@ -31,7 +31,7 @@ export const inviteCandidate = async (req, res) => {
   }
 };
 
-////////////////////////////Verification part////////////////////////////
+/////////////////////////// Verification part ///////////////////////////
 export const validateCandidate = async (req, res) => {
   const { token } = req.params;
 
