@@ -8,7 +8,7 @@ export const handleInterview = async (sessionId, answer, candidateId = null, rol
     where: { sessionId }
   });
 
-  // 🟢 Create interview if not exists
+  // Create interview if not exists
   if (!interview) {
       interview = await prisma.interview.create({
         data: {
@@ -25,7 +25,7 @@ export const handleInterview = async (sessionId, answer, candidateId = null, rol
 
   console.log("BEFORE:", conversation);
 
-  // 🟢 Add user answer
+  // Add user answer
   if (answer) {
     conversation.push({
       role: "user",
@@ -33,7 +33,7 @@ export const handleInterview = async (sessionId, answer, candidateId = null, rol
     });
   }
 
-  // 🔴 STOP after 5 questions
+  // STOP after 5 questions
   if (interview.questionCount >= 5) {
     const evaluation = await evaluateCandidate(conversation);
 
@@ -52,14 +52,14 @@ export const handleInterview = async (sessionId, answer, candidateId = null, rol
     };
   }
 
-  // 🟢 Generate next question
+  // Generate next question
       const nextQuestion = await generateNextQuestion(
       conversation,
       interview.questionCount,
       role
     );
 
-  // 🟢 Add AI question to conversation
+  // Add AI question to conversation
   conversation.push({
     role: "assistant",
     content: nextQuestion
@@ -67,7 +67,7 @@ export const handleInterview = async (sessionId, answer, candidateId = null, rol
 
   console.log("AFTER:", conversation);
 
-  // 🟢 Save everything
+  // Save everything
   await prisma.interview.update({
     where: { id: interview.id },
     data: {
