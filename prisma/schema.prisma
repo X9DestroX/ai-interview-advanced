@@ -18,7 +18,9 @@ model Job {
 model Candidate {
   id      String @id @default(uuid())
   email   String
-  jobId   String
+  name    String?
+  role    String @default("Frontend")  // To make the Ai ask questions based on applicant role
+  jobId   String?
   token   String?
 
   interviews Interview[]
@@ -26,15 +28,16 @@ model Candidate {
 
 model Interview {
   id            String   @id @default(uuid())
+  sessionId     String   @unique
   candidateId   String
-  sessionId     String
-  conversation  Json
+
+  role          String?   // optional is fine
+
+  conversation  Json?
   questionCount Int      @default(0)
 
-  score         Float?
-  feedback      Json?     // strengths, weaknesses, summary
-
-  createdAt     DateTime @default(now())
+  score         Int?
+  feedback      Json?
 
   candidate     Candidate @relation(fields: [candidateId], references: [id])
 }

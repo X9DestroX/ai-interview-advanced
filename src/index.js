@@ -1,12 +1,12 @@
+import dotenv from "dotenv";
+dotenv.config();
+
 import express from "express";
 import cors from "cors";
-import dotenv from "dotenv";
 
 import jobRoutes from "./routes/jobRoutes.js";
 import candidateRoutes from "./routes/candidateRoutes.js";
 import interviewRoutes from "./routes/interviewRoutes.js";
-
-dotenv.config();
 
 const app = express();
 

@@ -1,36 +1,73 @@
-import OpenAI from "openai";
+import Groq from "groq-sdk";
 
-const client = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
+const groq = new Groq({
+  apiKey: process.env.GROQ_API_KEY,
 });
 
-// Generate next question dynamically
-export const generateNextQuestion = async (conversationHistory) => {
+export const generateNextQuestion = async (
+  conversation,
+  questionCount,
+  role
+) => {
   try {
-    const response = await client.chat.completions.create({
-      model: "gpt-4o-mini",
+
+    // 🟢 COMMON FIRST QUESTIONS (ALL ROLES)
+    if (questionCount === 0) {
+      return "Tell me about yourself.";
+    }
+
+    if (questionCount === 1) {
+      return "How many years of experience do you have?";
+    }
+
+    if (questionCount === 2) {
+      return "What technologies or tools have you worked with?";
+    }
+
+    // 🔥 ROLE-SPECIFIC PROMPT
+    const rolePrompt = `
+You are conducting an interview for the role: ${role}
+
+Focus ONLY on ${role} topics.
+
+Role Guidelines:
+- Frontend → React, UI, performance, state management
+- Backend → APIs, databases, authentication, scalability
+- HR → communication, behavior, teamwork, conflict resolution
+`;
+
+    // 🔥 AI QUESTION GENERATION
+    const response = await groq.chat.completions.create({
+      model: "llama-3.3-70b-versatile",
+      temperature: 0.7,
       messages: [
         {
           role: "system",
           content: `
-You are an AI interviewer.
+${rolePrompt}
 
-Rules:
-- Ask one question at a time
-- Start easy → increase difficulty
-- Ask follow-up based on previous answer
-- Max 6 questions total
-- Be professional
-          `,
+You are a senior professional interviewer.
+
+STRICT RULES:
+- Ask ONLY one question
+- NEVER repeat previous questions
+- Ask based on candidate's LAST answer
+- Increase difficulty gradually
+- Focus on real-world scenarios
+- Do NOT explain anything
+
+FLOW:
+Intro → Experience → Tools → Role-specific technical → Advanced
+`
         },
-        ...conversationHistory,
+        ...conversation
       ],
     });
 
-    return response.choices[0].message.content;
+    return response.choices[0].message.content.trim();
 
   } catch (error) {
-    console.error(error);
-    throw error;
+    console.error("Groq Error:", error.message);
+    return "Can you tell me more about your experience?";
   }
 };
