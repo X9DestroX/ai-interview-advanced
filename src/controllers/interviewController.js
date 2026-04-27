@@ -6,7 +6,7 @@ export const interviewFlow = async (req, res) => {
   let { sessionId, answer, name, email, role } = req.body;
 
   try {
-    // 🔹 FIRST REQUEST → create candidate + session
+    // FIRST REQUEST → create candidate + session
     if (!sessionId) {
 
       // Validate role
@@ -40,7 +40,7 @@ export const interviewFlow = async (req, res) => {
       });
     }
 
-    // 🔹 NEXT REQUESTS → continue interview
+    // NEXT REQUESTS → continue interview
 
     //Fetch role from DB (important)
     const interview = await prisma.interview.findFirst({
