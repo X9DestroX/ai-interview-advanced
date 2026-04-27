@@ -11,7 +11,7 @@ export const generateNextQuestion = async (
 ) => {
   try {
 
-    // 🟢 COMMON FIRST QUESTIONS (ALL ROLES)
+    // COMMON FIRST QUESTIONS (ALL ROLES)
     if (questionCount === 0) {
       return "Tell me about yourself.";
     }
@@ -24,7 +24,7 @@ export const generateNextQuestion = async (
       return "What technologies or tools have you worked with?";
     }
 
-    // 🔥 ROLE-SPECIFIC PROMPT
+    // ROLE-SPECIFIC PROMPT
     const rolePrompt = `
 You are conducting an interview for the role: ${role}
 
@@ -36,7 +36,7 @@ Role Guidelines:
 - HR → communication, behavior, teamwork, conflict resolution
 `;
 
-    // 🔥 AI QUESTION GENERATION
+    // AI QUESTION GENERATION
     const response = await groq.chat.completions.create({
       model: "llama-3.3-70b-versatile",
       temperature: 0.7,
