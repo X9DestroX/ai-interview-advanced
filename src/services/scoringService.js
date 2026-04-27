@@ -7,14 +7,14 @@ const groq = new Groq({
 export const evaluateCandidate = async (conversation) => {
   try {
 
-    // 🔥 Format conversation properly
+    // Format conversation properly
     const formattedConversation = conversation
       .map(c => `${c.role.toUpperCase()}: ${c.content}`)
       .join("\n");
 
     const response = await groq.chat.completions.create({
       model: "llama-3.3-70b-versatile",
-      temperature: 0.3, // 🔥 more consistent scoring
+      temperature: 0.3, // more consistent scoring
       messages: [
         {
           role: "system",
@@ -77,7 +77,7 @@ OUTPUT (STRICT JSON ONLY)
 
     const text = response.choices[0].message.content;
 
-    // 🔥 Safe JSON parsing
+    // Safe JSON parsing
     try {
       return JSON.parse(text);
     } catch (err) {
